@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 public class clicking_script : MonoBehaviour
 {
     public bool isOnSquare = false;
