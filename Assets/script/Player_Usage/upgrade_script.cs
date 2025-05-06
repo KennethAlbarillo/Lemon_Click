@@ -16,11 +16,8 @@ public class upgrade_script : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
     bool MouseOver(){
-        if (Mathf.Round(mousePos.x * 10)/10 == transform.position.x && Mathf.Round(mousePos.y) == transform.position.y){
-            // Debug.Log("Over Upgrade");
-            return true;
-        }
-        return false;
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        return GetComponent<Collider2D>().OverlapPoint(mousePos);
     }
     
     bool objectClicked(){
