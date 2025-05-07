@@ -16,7 +16,7 @@ public class number_appearance : MonoBehaviour
     }
 
     public void spawnObj(){
-        TextMeshPro newCopy = Instantiate(textObj, new Vector3(mousePos.x, mousePos.y - 0.5f, -0.08f), Quaternion.identity);
+        TextMeshPro newCopy = Instantiate(textObj, new Vector3(mousePos.x, mousePos.y - 0.7f, -0.08f), Quaternion.identity);
         StartCoroutine(FloatAndFade(newCopy));
     }
 
@@ -32,6 +32,7 @@ public class number_appearance : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
+        Destroy(temp.gameObject);
     }
 
     // Update is called once per frame

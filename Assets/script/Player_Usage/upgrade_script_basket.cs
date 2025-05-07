@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.Collections;
 
-public class upgrade_script : MonoBehaviour
+public class upgrade_script_basket : MonoBehaviour
 {
     public string upgrade_type;
     public scoreCounter score_script;
@@ -12,9 +11,6 @@ public class upgrade_script : MonoBehaviour
 
     public bool upgrade_avaliable = false;
     public bool isOnObject;
-    private int upgrade_value = 0;
-    private Coroutine scoreCoroutine;
-private bool isScoring = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
     bool MouseOver(){
@@ -37,19 +33,17 @@ private bool isScoring = false;
     {
         obj_render = GetComponent<SpriteRenderer>();
         obj_render.color = current_color;
-        StartCoroutine(increaseScore());
     }
 
-    void upgradeLemonTree(){
+    void upgradeBasket(){
         // Debug.Log("Upgrade_Avaliable : " + upgrade_avaliable);
         // Debug.Log("Item Clicked : " + itemClicked);
         if (upgrade_avaliable && objectClicked()){
-            score_script.score -= 15;
-            upgrade_value += 1;
-
+            score_script.score -= 40;
+            score_script.basketSize *= 2;
         }
-        if (upgrade_type == "Lemon Tree"){
-            if (score_script.score >= 15){
+        if (upgrade_type == "Basket"){
+            if (score_script.score >= 40){
                 current_color = new Color(37f/255f, 172f/255f, 51f/255f);
                 upgrade_avaliable = true;
                 // Debug.Log("Green");
@@ -61,26 +55,12 @@ private bool isScoring = false;
         }
     }
 
-    IEnumerator increaseScore(){
-        isScoring = true;
-        // Debug.Log("score_script.basketSize : " + score_script.basketSize);
-        while (score_script.score < score_script.basketSize){
-            if (score_script.score + upgrade_value > score_script.basketSize){ score_script.score = score_script.basketSize;}
-            else {score_script.score += upgrade_value;}
-            yield return new WaitForSeconds(2);
-        }
-        isScoring = false;
-    }
-
     // Update is called once per frame
     void Update()
     {
         mousePos = clicking_Script.mousePos;
         obj_render.color = current_color;
         objectClicked();
-        // Debug.Log("Mouse: " + Mathf.Round(mousePos.y));
-        // Debug.Log("Transform Position : " + transform.position.y);
-        upgradeLemonTree();
-        if (score_script.score < score_script.basketSize && !isScoring){scoreCoroutine = StartCoroutine(increaseScore());}
+        upgradeBasket();
     }
 }
