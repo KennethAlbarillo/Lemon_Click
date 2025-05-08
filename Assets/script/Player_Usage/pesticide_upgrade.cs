@@ -1,10 +1,9 @@
 using UnityEngine;
 using TMPro;
-using UnityEditor.Rendering;
 
 public class pesticide_upgrade : MonoBehaviour
 {
-    public ant_script ant_Script;
+    public public_ant_holder public_variable;
     public TextMeshPro current_cost;
     public scoreCounter score_Script;
     public clicking_script clicking_Script;
@@ -37,14 +36,17 @@ public class pesticide_upgrade : MonoBehaviour
         current_cost.text = "Cost: " + upgrade_cost;
     }
 
-    void updateThreshold(){
-        ant_Script.antSpawnThreshold += 1 * upgrade_value;
+    void updateValues(){
+        public_variable.antSpawnThreshold += 1 * upgrade_value;
+        public_variable.ant_speed -= 0.2f;
+        public_variable.SpawnCooldown += 0.3f;
+        public_variable.takeDivision += 0.5f;
     }
 
     void killAllAntCopies(){
         GameObject[] ants = GameObject.FindGameObjectsWithTag("enemy");
         foreach(GameObject ant in ants){Destroy(ant);}
-        ant_Script.numAnts = 0;
+        public_variable.updateValues();
     }
 
     void upgradePesticide(){
@@ -55,7 +57,7 @@ public class pesticide_upgrade : MonoBehaviour
             upgrade_value += 1;
             upgrade_cost *= 2;
             updateText();
-            updateThreshold();
+            updateValues();
             killAllAntCopies();
         }
         if (score_Script.score >= upgrade_cost){

@@ -48,7 +48,7 @@ public class upgrade_script_fertilizer : MonoBehaviour
         // Debug.Log("Item Clicked : " + itemClicked);
         if (upgrade_avaliable && objectClicked()){
             score_script.score -= upgrade_cost;
-            upgrade_value += 0.1f;
+            upgrade_value += 0.3f;
             upgrade_cost *= 3;
             changeCooldownTime();
             updateText();

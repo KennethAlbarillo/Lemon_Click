@@ -14,7 +14,7 @@ public class LPC_upgrade : MonoBehaviour
     public bool upgrade_avaliable = false;
     public bool isOnObject;
     private int upgrade_value = 1;
-    private int upgrade_cost = 300;
+    private int upgrade_cost = 30;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     bool MouseOver(){
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

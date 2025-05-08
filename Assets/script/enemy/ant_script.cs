@@ -10,18 +10,27 @@ public class ant_script : MonoBehaviour
     public Sprite ant_lemon;
     public Sprite normal_ant;
     public SpriteRenderer spriteRenderer;
-    public float antSpeed = 0.5f;
-    private float SpawnTime = 0f;
-    public float SpawnCooldown = 1f;
-    public int antSpawnThreshold = 50;
+    public float antSpeed;
+    private float SpawnTime;
+    public float SpawnCooldown;
+    public int antSpawnThreshold;
+    public float takeDivision;
     public int numAnts = 0;
     public TextMeshPro ant_msg_textbox;
     private Vector3 spawnLocation;
     private int stealMax;
     private Coroutine fadeCoroutine;
+    private Coroutine reduceThreshold;
+    private public_ant_holder public_variables;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        public_ant_holder public_variables = GetComponentInParent<public_ant_holder>();
+        antSpeed = public_variables.ant_speed;
+        antSpawnThreshold = public_variables.antSpawnThreshold;
+        SpawnTime = public_variables.SpawnTime;
+        SpawnCooldown = public_variables.SpawnCooldown;
+        takeDivision = public_variables.takeDivision;
         spriteRenderer = GetComponent<SpriteRenderer>();
         spawnLocation = ant.transform.position;
     }
@@ -58,7 +67,7 @@ public class ant_script : MonoBehaviour
             yield return null;
         }
         if (temp == null || tempRenderer == null) yield break;
-        stealMax = Mathf.RoundToInt(score_Script.score/3) + Random.Range(1, 9);
+        stealMax = Mathf.RoundToInt(score_Script.score/takeDivision) + Random.Range(1, 9);
         int num_stolen_goods = Random.Range(1, stealMax);
         tempRenderer.sprite = ant_lemon;
         if (score_Script.score > 0 && score_Script.score - num_stolen_goods > 0){
@@ -67,7 +76,7 @@ public class ant_script : MonoBehaviour
             score_Script.score = 0;
         }
         if (num_stolen_goods == 1){
-            updateAntMsg("The ant stole" + num_stolen_goods + " Lemon!");
+            updateAntMsg("The ant stole " + num_stolen_goods + " Lemon!");
         } else {
             updateAntMsg("The ant stole " + num_stolen_goods + " Lemons!");
         }
@@ -83,13 +92,26 @@ public class ant_script : MonoBehaviour
         }
     }
 
+    public IEnumerator ReduceThreshold(){
+        yield return new WaitForSeconds(5f);
+        while (antSpawnThreshold >= 80){
+            Debug.Log("ReduceThreshold : In while-loop");
+            antSpawnThreshold -= 3;
+            yield return new WaitForSeconds(2f);
+        }
+        reduceThreshold = null;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (antSpawnThreshold >= 100 && reduceThreshold == null) {
+            reduceThreshold = StartCoroutine(ReduceThreshold());
+        }
         if (numAnts == 0) {SpawnTime -= Time.deltaTime;}
         if (score_Script.score > 0 && SpawnTime <= 0f && numAnts == 0){
             int chance = Random.Range(0, 100);
-            Debug.Log("Picking Number : " + chance);
+            // Debug.Log("Picking Number : " + chance);
             if (chance > antSpawnThreshold){
                 GameObject newCopy = Instantiate(ant, ant.transform.position, Quaternion.identity);
                 newCopy.tag = "enemy";
