@@ -5,6 +5,7 @@ public class scoreCounter : MonoBehaviour
 {
     public int score;
     public int basketSize;
+    public int click_value = 1;
     public TextMeshPro scoreText;
     public clicking_script clickScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,7 +19,7 @@ public class scoreCounter : MonoBehaviour
     void Update()
     {
         if (clickScript.objectClicked() && score <= basketSize){
-            score += 1;
+            score += click_value;
         }
         scoreText.text = score.ToString();
     }

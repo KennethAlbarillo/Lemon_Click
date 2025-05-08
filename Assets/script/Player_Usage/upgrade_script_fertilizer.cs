@@ -1,18 +1,20 @@
-using TMPro;
 using UnityEngine;
+using TMPro;
 
-public class upgrade_script_basket : MonoBehaviour
+public class upgrade_script_fertilizer : MonoBehaviour
 {
     public TextMeshPro current_cost;
     public scoreCounter score_script;
     public clicking_script clicking_Script;
+    public upgrade_script lemon_tree;
     public Color current_color = new Color(183f/255f, 140f/255f, 140f/255f);
     public SpriteRenderer obj_render;
     public Vector2 mousePos;
 
     public bool upgrade_avaliable = false;
     public bool isOnObject;
-    private int upgrade_cost = 250;
+    private float upgrade_value = 0;
+    private int upgrade_cost = 100;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
     bool MouseOver(){
@@ -41,14 +43,14 @@ public class upgrade_script_basket : MonoBehaviour
     void updateText(){
         current_cost.text = "Cost: " + upgrade_cost;
     }
-
-    void upgradeBasket(){
+    void upgradeFertilizer(){
         // Debug.Log("Upgrade_Avaliable : " + upgrade_avaliable);
         // Debug.Log("Item Clicked : " + itemClicked);
         if (upgrade_avaliable && objectClicked()){
             score_script.score -= upgrade_cost;
-            score_script.basketSize *= 2;
-            upgrade_cost *= 2;
+            upgrade_value += 0.1f;
+            upgrade_cost *= 3;
+            changeCooldownTime();
             updateText();
         }
         if (score_script.score >= upgrade_cost){
@@ -62,12 +64,18 @@ public class upgrade_script_basket : MonoBehaviour
         }
     }
 
+    void changeCooldownTime(){
+        lemon_tree.cooldown -= upgrade_value;
+    }
+
     // Update is called once per frame
     void Update()
     {
         mousePos = clicking_Script.mousePos;
         obj_render.color = current_color;
         objectClicked();
-        upgradeBasket();
+        // Debug.Log("Mouse: " + Mathf.Round(mousePos.y));
+        // Debug.Log("Transform Position : " + transform.position.y);
+        upgradeFertilizer();
     }
 }

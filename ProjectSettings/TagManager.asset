@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - upgrade_button
+  - enemy
+  - ant_spawner
   layers:
   - Default
   - TransparentFX
